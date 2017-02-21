@@ -97,6 +97,69 @@ queue_pass.server.list <- function(arrivals, service, servers){
 }
 
 
+#' Compute the departure times of a set of customers in a queue from their arrival and service times.
+#' @param arrivals numeric vector of non-negative arrival times
+#' @param service numeric vector of non-negative service times
+#' @param servers a non-zero natural number, an object of class \code{server.stepfun}
+#' or an object of class \code{server.list}.
+#' @param serveroutput boolean whether the server used by each customer should be returned.
+#' @description \code{queue} is a faster internal version of \code{queue_step}. It is not compatible with the \code{summary.queue_df} method.
+#' @examples
+#' queue(rep(1, 7), service = rep(0.2, 7),
+#' servers = as.server.stepfun(3.1, c(2, 1)))
+#' @seealso
+#' \code{\link{queue_step}}
+#' @importFrom Rcpp sourceCpp
+#' @import dplyr
+#' @export
+queue2 <- function(arrivals, service, servers = 1, serveroutput = FALSE){
+
+  n <- length(arrivals)
+
+  input <- data_frame(
+    ID = c(1:n),
+    arrivals = arrivals,
+    service = service
+  )
+
+  ordstatement <- is.unsorted(input %>% select(arrivals))
+
+  if(ordstatement){
+    input <- input %>% arrange(arrivals)
+  }
+
+  # check_queueinput(arrivals, service)
+  #
+
+
+  # Order arrivals and service according to time
+
+  # if(ordstatement){
+  #   ord <- order(arrivals, method = "radix")
+  #   arrivals <- arrivals[ord]
+  #   service <- service[ord]
+  # }
+
+  input <- input %>% mutate(
+    departures = queue_pass(arrivals, service, servers = servers)[1:n]
+  )
+
+  if(ordstatement){
+    input <- input %>% arrange(ID)
+  }
+
+
+  # output <- queue_pass(arrivals = input %>% select(arrivals), service = input %>% select(service), servers = servers)
+  #
+  # input <- input %>% mutate(
+  #   departures = output[1:n],
+  #   queue_vector = output[I(n+1):I(n*2)]
+  # )
+
+  return(input)
+}
+
+
 
 
 
