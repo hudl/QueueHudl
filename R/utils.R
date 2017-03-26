@@ -162,6 +162,11 @@ generate_input <- function(mag = 3){
   service <<- rexp(n)
   departures <<- queue(arrivals, service, 1)
   QDC_obj <<- QDC(arrivals, service, 1)
+  arrival_df <<- data.frame(
+    ID = c(1:n),
+    times = arrivals
+  )
+  departures_df <<- queue_step(arrival_df, service, 1)
 }
 
 generate_queuedata <- function(mag = 3){

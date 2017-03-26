@@ -122,19 +122,22 @@ summary.queue_list <- function(object, ...){
   # Missed customers and initial input
 
   missed_customers = length(
-    is.infinite(object$departures_df$departures)
+    which(
+      is.infinite(object$departures_df$departures)
+    )
   )
 
-  departures_df <- object$departures_df %>%
-    select(is.finite(departures))
-  queuelength_df <- object$queuelength_df %>%
-    select(is.finite(times))
-  servers_input <- servers_input
+  scd = is.finite(object$departures_df$departures)
+  scq = is.finite(object$queuelength_df$times)
+
+  departures_df <- object$departures_df[scd,]
+  queuelength_df <- object$queuelength_df[scq,]
+  servers_input <- object$servers_input
 
   # Compute response times and waiting times
 
   departures_df <- departures_df %>%
-    mutate(
+    dplyr::mutate(
       response = departures - arrivals,
       waiting = departures - arrivals - service
     )
@@ -145,11 +148,26 @@ summary.queue_list <- function(object, ...){
     queuelength_df$times, queuelength_df$queuelength
   )
 
+  summary_output <- list(
+    queue_list = object,
+    departures_df = departures_df,
+    qlength_sum = qlength_sum,
+    missed_customers = missed_customers
+  )
 
+  class(summary_output) <- c("queue_list_summary", "list")
 
+  return(summary_output)
 }
 
-
+#' @export
+print.queue_list_summary <- function(x, ...){
+  cat("\nMissed customers:\n", paste(x$missed_customers))
+  cat("\n")
+  print(summary(x$departures_df))
+  cat("\n")
+  print(x$qlength_sum)
+}
 
 
 
