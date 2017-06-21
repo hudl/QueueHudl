@@ -1,4 +1,4 @@
-Package: queuecomputer
+Package: QueueHudl
 Title: Computationally Efficient Queue Simulation
 Version: 0.8.1
 Authors@R: person("Anthony", "Ebert", email = "anthonyebert+CRAN@gmail.com",
