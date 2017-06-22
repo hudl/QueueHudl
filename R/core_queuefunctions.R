@@ -34,12 +34,12 @@ queue <- function(arrivals, service, due, servers = 1, serveroutput = FALSE, adj
   service = service * adjust
   check_queueinput(arrivals, service)
 
-  ordstatement <- is.unsorted(due)
+  ordstatement <- is.unsorted(arrivals)
 
   # Order arrivals and service according to time
 
   if(ordstatement){
-    ord <- order(due, method = "radix")
+    ord <- order(arrivals, method = "radix")
     due <- due[ord]
     arrivals <- arrivals[ord]
     service <- service[ord]
