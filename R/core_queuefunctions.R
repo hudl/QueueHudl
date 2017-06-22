@@ -29,17 +29,17 @@
 #' @useDynLib queuecomputer, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @export
-queue <- function(arrivals, service, servers = 1, serveroutput = FALSE, adjust = 1){
+queue <- function(arrivals, service, due, servers = 1, serveroutput = FALSE, adjust = 1){
 
   service = service * adjust
   check_queueinput(arrivals, service)
 
-  ordstatement <- is.unsorted(arrivals)
+  ordstatement <- is.unsorted(due)
 
   # Order arrivals and service according to time
 
   if(ordstatement){
-    ord <- order(arrivals, method = "radix")
+    ord <- order(due, method = "radix")
     arrivals <- arrivals[ord]
     service <- service[ord]
   }
