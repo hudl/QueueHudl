@@ -162,7 +162,7 @@ queue_pass.server.list <- function(arrivals, service, servers){
 #' @seealso
 #' \code{\link{queue}}, \code{\link{summary.queue_list}}, \code{\link{plot.queue_list}}
 #' @export
-queue_step <- function(arrivals, service, servers = 1, labels = NULL, adjust = 1){
+queue_step <- function(arrivals, service, due, servers = 1, labels = NULL, adjust = 1){
 
   arrivals <- depart(arrivals)
 
