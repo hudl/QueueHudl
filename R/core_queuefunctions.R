@@ -166,7 +166,7 @@ queue_step <- function(arrivals, service, due, servers = 1, labels = NULL, adjus
 
   arrivals <- depart(arrivals)
 
-  departures <- queue(arrivals = arrivals, service = service, servers = servers, serveroutput = TRUE, adjust = 1)
+  departures <- queue(arrivals = arrivals, service = service, due = due, servers = servers, serveroutput = TRUE, adjust = 1)
 
   server <- attr(departures, "server")
   attributes(departures) <- NULL
