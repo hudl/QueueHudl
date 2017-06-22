@@ -39,7 +39,7 @@ queue <- function(arrivals, service, due, servers = 1, serveroutput = FALSE, adj
   # Order arrivals and service according to time
 
   if(ordstatement){
-    ord <- order(arrivals, method = "radix")
+    ord <- order(due, method = "radix")
     due <- due[ord]
     arrivals <- arrivals[ord]
     service <- service[ord]
