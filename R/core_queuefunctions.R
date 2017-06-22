@@ -53,7 +53,8 @@ queue <- function(arrivals, service, due, servers = 1, serveroutput = FALSE, adj
   ordstatement2 <- is.unsorted(due)
   
   if(ordstatement2){
-    new_ord <- order(ord)
+    ord2 <- order(due, method = "radix")
+    new_ord <- order(ord2)
     departures <- departures[new_ord]
     queue_vector <- queue_vector[new_ord]
   }
