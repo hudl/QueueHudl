@@ -50,7 +50,9 @@ queue <- function(arrivals, service, due, servers = 1, serveroutput = FALSE, adj
   departures <- output[1:length(arrivals)]
   queue_vector <- (output[I(length(arrivals) + 1):I(length(output) - 1)])
 
-  if(ordstatement){
+  ordstatement2 <- is.unsorted(due)
+  
+  if(ordstatement2){
     new_ord <- order(ord)
     departures <- departures[new_ord]
     queue_vector <- queue_vector[new_ord]
